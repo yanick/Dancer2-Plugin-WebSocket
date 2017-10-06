@@ -1,5 +1,5 @@
 package Dancer2::Plugin::WebSocket;
-# ABSTRACT: add a websocket interface to your Dancer app
+# ABSTRACT: add a websocket interface to your Dancers app
 
 =head1 SYNOPSIS
 
@@ -276,5 +276,19 @@ sub websocket_mount :PluginKeyword {
     )->to_app;
 
 }
+
+=head1 SEE ALSO
+
+This plugin is nothing much than a sugar topping atop 
+L<Plack::App::WebSocket>, which is itself L<AnyEvent::WebSocket::Server>
+wrapped in Plackstic.
+
+Mojolicious also has nice WebSocket-related offerings. See
+L<Mojolicious::Plugin::MountPSGI> or
+L<http://mojolicious.org/perldoc/Mojolicious/Guides/Cookbook#Web-server-embedding>. 
+(hi Joel!)
+
+
+=cut
 
 1;
