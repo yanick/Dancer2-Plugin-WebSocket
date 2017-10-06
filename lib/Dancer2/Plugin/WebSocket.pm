@@ -277,6 +277,17 @@ sub websocket_mount :PluginKeyword {
 
 }
 
+=head1 GOTCHAS
+
+It seems that the closing the socket causes Google's chrome to burp the
+following to the console:
+
+    WebSocket connection to 'ws://...' failed: Received a broken close frame containing a reserved status code.
+
+Firefox seems to be happy, though. The issue is probably somewhere deep in
+L<AnyEvent::WebSocket::Server>. Since the socket is being closed anyway, I am
+not overly worried about it.
+
 =head1 SEE ALSO
 
 This plugin is nothing much than a sugar topping atop 
