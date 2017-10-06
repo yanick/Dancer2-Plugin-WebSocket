@@ -1,5 +1,113 @@
 package Dancer2::Plugin::WebSocket;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: add a websocket interface to your Dancers app
+$Dancer2::Plugin::WebSocket::VERSION = '0.0.1';
+
+use Plack::App::WebSocket;
+
+use Dancer2::Plugin;
+
+use Role::Tiny qw();
+
+has serializer => (
+    is => 'ro',
+    from_config => 1,
+    coerce => sub {
+        my $serializer = shift or return undef;
+        require JSON::MaybeXS;
+        JSON::MaybeXS->new( ref $serializer ? %$serializer : () );
+    },
+);
+
+has mount_path => (
+    is => 'ro',
+    from_config => sub { '/ws' },
+);
+
+
+has 'on_'.$_ => (
+    is => 'rw',
+    plugin_keyword => 'websocket_on_'.$_,
+    default => sub { sub { } },
+) for qw/
+    open
+    message
+    close
+/;
+
+has 'on_error' => (
+    is => 'rw',
+    plugin_keyword => 'websocket_on_error',
+    default => sub { sub {
+            my $env = shift;
+            return [500,
+                    ["Content-Type" => "text/plain"],
+                    ["Error: " . $env->{"plack.app.websocket.error"}]];
+        }
+    },
+);
+
+
+sub websocket_url :PluginKeyword {
+    my $self = shift;
+    my $request = $self->app->request;
+    my $address = 'ws://' . $request->host . $self->mount_path;
+
+    return $address;
+}
+
+
+sub websocket_mount :PluginKeyword {
+    my $self = shift;
+
+    return 
+        $self->mount_path => Plack::App::WebSocket->new(
+        on_error => sub { $self->on_error->(@_) },
+        on_establish => sub {
+            my $conn = shift; ## Plack::App::WebSocket::Connection object
+            my $env = shift;  ## PSGI env
+
+            Role::Tiny->apply_roles_to_object(
+                $conn, 'Dancer2::Plugin::WebSocket::Connection'
+            );
+            $conn->serializer($self->serializer);
+
+            $self->on_open->( $conn, $env, @_ );
+
+            $conn->on(
+                message => sub {
+                    my( $conn, $message ) = @_;
+                    if( my $s = $conn->serializer ) {
+                        $message = $s->decode($message);
+                    }
+                    $self->on_message->( $conn, $message );
+                },
+                finish => sub {
+                    $self->on_close->($conn);
+                    $conn = undef;
+                },
+            );
+        }
+    )->to_app;
+
+}
+
+
+1;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Dancer2::Plugin::WebSocket - add a websocket interface to your Dancers app
+
+=head1 VERSION
+
+version 0.0.1
 
 =head1 SYNOPSIS
 
@@ -69,7 +177,6 @@ F<MyApp.pm>:
 
   true;
 
-
 =head1 DESCRIPTION
 
 C<Dancer2::Plugin::WebSocket> provides an interface to L<Plack::App::WebSocket>
@@ -102,37 +209,11 @@ Path for the websocket mountpoint. Defaults to C</ws>.
 
 =back
 
-
-
-=cut
-
-use Plack::App::WebSocket;
-
-use Dancer2::Plugin;
-
-use Role::Tiny qw();
-
-has serializer => (
-    is => 'ro',
-    from_config => 1,
-    coerce => sub {
-        my $serializer = shift or return undef;
-        require JSON::MaybeXS;
-        JSON::MaybeXS->new( ref $serializer ? %$serializer : () );
-    },
-);
-
-has mount_path => (
-    is => 'ro',
-    from_config => sub { '/ws' },
-);
-
 =head1 PLUGIN KEYWORDS
 
 In the various callbacks, the connection object that is
 passed is a L<Plack::App::WebSocket::Connection> object 
 augmented with the L<Dancer2::Plugin::WebSocket::Connection> role.
-
 
 =head2 websocket_on_open sub { ... }
 
@@ -141,12 +222,10 @@ augmented with the L<Dancer2::Plugin::WebSocket::Connection> role.
         ...;
     };
 
-
 Code invoked when a new socket is opened. Gets the new 
 connection
 object and the Plack
 C<$env> hash as arguments. 
-
 
 =head2 websocket_on_close sub { ... }
 
@@ -154,7 +233,6 @@ C<$env> hash as arguments.
         my( $conn ) = @_;
         ...;
     };
-
 
 Code invoked when a new socket is opened. Gets the 
 connection object as argument.
@@ -165,7 +243,6 @@ connection object as argument.
         my( $env ) = @_;
         ...;
     };
-
 
 Code invoked when an error  is detected. Gets the Plack
 C<$env> hash as argument and is expected to return a 
@@ -189,33 +266,8 @@ If not explicitly set, defaults to
         ...;
     };
 
-
 Code invoked when a message is received. Gets the connection
 object and the message as arguments.
-
-=cut
-
-has 'on_'.$_ => (
-    is => 'rw',
-    plugin_keyword => 'websocket_on_'.$_,
-    default => sub { sub { } },
-) for qw/
-    open
-    message
-    close
-/;
-
-has 'on_error' => (
-    is => 'rw',
-    plugin_keyword => 'websocket_on_error',
-    default => sub { sub {
-            my $env = shift;
-            return [500,
-                    ["Content-Type" => "text/plain"],
-                    ["Error: " . $env->{"plack.app.websocket.error"}]];
-        }
-    },
-);
 
 =head2 websocket_url
 
@@ -225,57 +277,10 @@ Returns the full url of the websocket mountpoint.
     # and the mountpoint is '/ws'
     print websocket_url;  # => ws://localhost:5000/ws
 
-=cut
-
-sub websocket_url :PluginKeyword {
-    my $self = shift;
-    my $request = $self->app->request;
-    my $address = 'ws://' . $request->host . $self->mount_path;
-
-    return $address;
-}
-
 =head2 websocket_mount 
 
 Returns the mountpoint and the Plack app coderef to be
 used for C<mount> in F<app.psgi>. See the SYNOPSIS.
-
-=cut
-
-sub websocket_mount :PluginKeyword {
-    my $self = shift;
-
-    return 
-        $self->mount_path => Plack::App::WebSocket->new(
-        on_error => sub { $self->on_error->(@_) },
-        on_establish => sub {
-            my $conn = shift; ## Plack::App::WebSocket::Connection object
-            my $env = shift;  ## PSGI env
-
-            Role::Tiny->apply_roles_to_object(
-                $conn, 'Dancer2::Plugin::WebSocket::Connection'
-            );
-            $conn->serializer($self->serializer);
-
-            $self->on_open->( $conn, $env, @_ );
-
-            $conn->on(
-                message => sub {
-                    my( $conn, $message ) = @_;
-                    if( my $s = $conn->serializer ) {
-                        $message = $s->decode($message);
-                    }
-                    $self->on_message->( $conn, $message );
-                },
-                finish => sub {
-                    $self->on_close->($conn);
-                    $conn = undef;
-                },
-            );
-        }
-    )->to_app;
-
-}
 
 =head1 GOTCHAS
 
@@ -299,7 +304,15 @@ L<Mojolicious::Plugin::MountPSGI> or
 L<http://mojolicious.org/perldoc/Mojolicious/Guides/Cookbook#Web-server-embedding>. 
 (hi Joel!)
 
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2017 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-1;
