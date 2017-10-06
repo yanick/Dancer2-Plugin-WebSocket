@@ -39,8 +39,7 @@ F<MyApp.pm>:
 
   websocket_on_message sub {
     my( $conn, $message ) = @_;
-    $message->{hello} = 'browser!';
-    $conn->send( $message );
+    $conn->send( $message . ' world!' );
   };
 
   get '/' => sub {
@@ -59,7 +58,7 @@ F<MyApp.pm>:
             mySocket.onopen = function(evt) {
               console.log("opening");
               setTimeout( function() {
-                mySocket.send('{"hello": "Dancer"}'); }, 2000 );
+                mySocket.send('hello'); }, 2000 );
             };
 
       </script></head>
@@ -77,7 +76,7 @@ C<Dancer2::Plugin::WebSocket> provides an interface to L<Plack::App::WebSocket>
 and allows to interact with the webSocket connections within the Dancer app.
 
 L<Plack::App::WebSocket>, and thus this plugin, requires a plack server that
-supports the psgi attributes 'streaming', 'nonblocking' and 'io'. L<Twiggy> 
+supports the psgi I<streaming>, I<nonblocking> and I<io>. L<Twiggy> 
 is the most popular server that fits the bill.
 
 =head1 CONFIGURATION
@@ -86,10 +85,10 @@ is the most popular server that fits the bill.
 
 =item serializer
 
-If serializer is set to C<true>, messages will be assumed to be JSON objects and
-will be automatically encoded/decoded using a L<JSON::MaybeXS> serializer.
-If the value of C<serialier> is a hash, it'll be passed as arguments to the 
-L<JSON::MaybeXS> constructor.
+If serializer is set to a C<true> value, messages will be assumed to be JSON
+objects and will be automatically encoded/decoded using a L<JSON::MaybeXS>
+serializer.  If the value of C<serialier> is a hash, it'll be passed as
+arguments to the L<JSON::MaybeXS> constructor.
 
     plugins:
         WebSocket:
@@ -100,7 +99,6 @@ L<JSON::MaybeXS> constructor.
 =item mount_path
 
 Path for the websocket mountpoint. Defaults to C</ws>.
-
 
 =back
 
@@ -150,7 +148,7 @@ object and the Plack
 C<$env> hash as arguments. 
 
 
-=head1 websocket_on_close sub { ... }
+=head2 websocket_on_close sub { ... }
 
     websocket_on_close sub {
         my( $conn ) = @_;
