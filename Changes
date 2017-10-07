@@ -8,6 +8,7 @@ Revision history for Dancer2-Plugin-WebSocket
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - Use Moo::Role instead of Role::Tiny.
 
   [ NEW FEATURES ]
 

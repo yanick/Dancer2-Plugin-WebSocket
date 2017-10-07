@@ -110,8 +110,6 @@ use Plack::App::WebSocket;
 
 use Dancer2::Plugin;
 
-use Role::Tiny qw();
-
 has serializer => (
     is => 'ro',
     from_config => 1,
@@ -252,7 +250,9 @@ sub websocket_mount :PluginKeyword {
             my $conn = shift; ## Plack::App::WebSocket::Connection object
             my $env = shift;  ## PSGI env
 
-            Role::Tiny->apply_roles_to_object(
+            require Moo::Role;
+
+            Moo::Role->apply_roles_to_object(
                 $conn, 'Dancer2::Plugin::WebSocket::Connection'
             );
             $conn->serializer($self->serializer);
