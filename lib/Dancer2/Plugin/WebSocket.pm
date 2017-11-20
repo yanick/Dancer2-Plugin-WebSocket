@@ -257,7 +257,8 @@ Returns the full url of the websocket mountpoint.
 sub websocket_url :PluginKeyword {
     my $self = shift;
     my $request = $self->app->request;
-    my $address = 'ws://' . $request->host . $self->mount_path;
+    my $proto = $request->secure ? 'wss://' : 'ws://';
+    my $address = $proto . $request->host . $self->mount_path;
 
     return $address;
 }
