@@ -4,6 +4,7 @@ Revision history for Dancer2-Plugin-WebSocket
   [ API CHANGES ]
 
   [ BUG FIXES ]
+  - change protocol to 'wss://' if request is secure. (Frank Schreiner, GH#1)
 
   [ DOCUMENTATION ]
 
