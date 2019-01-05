@@ -15,11 +15,17 @@ on 'test' => sub {
   requires "IO::Handle" => "0";
   requires "IPC::Open3" => "0";
   requires "Test::More" => "0";
+  requires "Test::Requires" => "0";
   requires "perl" => "5.006";
 };
 
 on 'test' => sub {
   recommends "CPAN::Meta" => "2.120900";
+  recommends "EV" => "0";
+  recommends "Mojo::Base" => "0";
+  recommends "Plack::Util" => "0";
+  recommends "Test::Mojo" => "0";
+  recommends "Twiggy::Server" => "0";
 };
 
 on 'configure' => sub {
