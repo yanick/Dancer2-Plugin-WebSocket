@@ -1,12 +1,10 @@
-use Test::Requires {
-    map { $_ => 0 } qw/
-        Mojo::Base
-        EV
-        Test::Mojo
-        Twiggy::Server
-        Plack::Util
-    /
-};
+use Test::Requires qw/
+    Mojo::Base
+    EV
+    Test::Mojo
+    Twiggy::Server
+    Plack::Util
+/;
 
 use Test::More;
 
