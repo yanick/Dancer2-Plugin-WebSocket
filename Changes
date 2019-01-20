@@ -11,6 +11,11 @@ Revision history for Dancer2-Plugin-WebSocket
 
   [ NEW FEATURES ]
 
+  [ MISC ]
+
+  - Adds tests via Mojolicious and the awesome Joel Berger. (GH#2)
+    see https://github.com/MojoliciousDotIO/mojolicious.io/blob/master/blog/2018/12/20/testing-dancer/websocket.t
+
   [ STATISTICS ]
 
 0.1.1 2017-11-20
