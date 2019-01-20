@@ -22,9 +22,8 @@ on 'test' => sub {
 on 'test' => sub {
   recommends "CPAN::Meta" => "2.120900";
   recommends "EV" => "0";
-  recommends "Mojo::Base" => "0";
+  recommends "Mojolicious" => "0";
   recommends "Plack::Util" => "0";
-  recommends "Test::Mojo" => "0";
   recommends "Twiggy::Server" => "0";
 };
 

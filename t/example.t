@@ -1,5 +1,4 @@
 use Test::Requires qw/
-    Mojo::Base
     EV
     Test::Mojo
     Twiggy::Server
