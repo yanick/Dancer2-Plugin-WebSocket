@@ -6,6 +6,7 @@ Revision history for Dancer2-Plugin-WebSocket
   [ BUG FIXES ]
 
   [ DOCUMENTATION ]
+    - Fixed minor typo in the pod. (GH#4, Mohammad S Anwar)
 
   [ ENHANCEMENTS ]
 
