@@ -8,6 +8,9 @@ Revision history for Dancer2-Plugin-WebSocket
   [ DOCUMENTATION ]
     - Fixed minor typo in the pod. (GH#4, Mohammad S Anwar)
 
+  [ MISC ]
+  - TravisCI now installs recommended modules as well.
+
   [ ENHANCEMENTS ]
 
   [ NEW FEATURES ]
