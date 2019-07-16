@@ -96,7 +96,7 @@ arguments to the L<JSON::MaybeXS> constructor.
 
     plugins:
         WebSocket:
-            serializer: 
+            serializer:
                 utf8:         1
                 allow_nonref: 1
 
@@ -104,8 +104,8 @@ By the way, if you want the connection to automatically serialize data
 structures to JSON on the client side, you can do something like
 
     var mySocket = new WebSocket(urlMySocket);
-    mySocket.sendJSON = function(message) { 
-        return this.send(JSON.stringify(message)) 
+    mySocket.sendJSON = function(message) {
+        return this.send(JSON.stringify(message))
     };
 
     // then later...
@@ -156,10 +156,10 @@ augmented with the L<Dancer2::Plugin::WebSocket::Connection> role.
     };
 
 
-Code invoked when a new socket is opened. Gets the new 
+Code invoked when a new socket is opened. Gets the new
 connection
 object and the Plack
-C<$env> hash as arguments. 
+C<$env> hash as arguments.
 
 
 =head2 websocket_on_close sub { ... }
@@ -170,7 +170,7 @@ C<$env> hash as arguments.
     };
 
 
-Code invoked when a new socket is opened. Gets the 
+Code invoked when a new socket is opened. Gets the
 connection object as argument.
 
 =head2 websocket_on_error sub { ... }
@@ -182,14 +182,14 @@ connection object as argument.
 
 
 Code invoked when an error  is detected. Gets the Plack
-C<$env> hash as argument and is expected to return a 
+C<$env> hash as argument and is expected to return a
 Plack triplet.
 
 If not explicitly set, defaults to
 
     websocket_on_error sub {
         my $env = shift;
-        return [ 
+        return [
             500,
             ["Content-Type" => "text/plain"],
             ["Error: " . $env->{"plack.app.websocket.error"}]
@@ -267,7 +267,7 @@ sub websocket_url :PluginKeyword {
     return $address;
 }
 
-=head2 websocket_mount 
+=head2 websocket_mount
 
 Returns the mountpoint and the Plack app coderef to be
 used for C<mount> in F<app.psgi>. See the SYNOPSIS.
@@ -277,7 +277,7 @@ used for C<mount> in F<app.psgi>. See the SYNOPSIS.
 sub websocket_mount :PluginKeyword {
     my $self = shift;
 
-    return 
+    return
         $self->mount_path => Plack::App::WebSocket->new(
         on_error => sub { $self->on_error->(@_) },
         on_establish => sub {
@@ -334,13 +334,13 @@ not overly worried about it.
 
 =head1 SEE ALSO
 
-This plugin is nothing much than a sugar topping atop 
+This plugin is nothing much than a sugar topping atop
 L<Plack::App::WebSocket>, which is itself L<AnyEvent::WebSocket::Server>
 wrapped in Plackstic.
 
 Mojolicious also has nice WebSocket-related offerings. See
 L<Mojolicious::Plugin::MountPSGI> or
-L<http://mojolicious.org/perldoc/Mojolicious/Guides/Cookbook#Web-server-embedding>. 
+L<http://mojolicious.org/perldoc/Mojolicious/Guides/Cookbook#Web-server-embedding>.
 (hi Joel!)
 
 
