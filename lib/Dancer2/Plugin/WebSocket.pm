@@ -122,7 +122,7 @@ Path for the websocket mountpoint. Defaults to C</ws>.
 
 =cut
 
-use 5.12.0;
+use v5.12.0;
 
 use Plack::App::WebSocket;
 

@@ -6,7 +6,7 @@ requires "Plack::App::WebSocket" => "0";
 requires "Scalar::Util" => "0";
 requires "Set::Tiny" => "0";
 requires "Try::Tiny" => "0";
-requires "perl" => "5.12";
+requires "perl" => "v5.12.0";
 requires "strict" => "0";
 requires "warnings" => "0";
 
