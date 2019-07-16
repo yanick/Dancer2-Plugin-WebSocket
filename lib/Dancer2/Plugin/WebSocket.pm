@@ -67,6 +67,10 @@ F<MyApp.pm>:
   END
   };
 
+  get '/say_hi' => sub {
+    $_->send([ "Hello!" ]) for websocket_connections;
+  };
+
   true;
 
 
