@@ -80,8 +80,8 @@ C<Dancer2::Plugin::WebSocket> provides an interface to L<Plack::App::WebSocket>
 and allows to interact with the webSocket connections within the Dancer app.
 
 L<Plack::App::WebSocket>, and thus this plugin, requires a plack server that
-supports the psgi I<streaming>, I<nonblocking> and I<io>. L<Twiggy> 
-is the most popular server that fits the bill.
+supports the psgi I<streaming>, I<nonblocking> and I<io>. L<Twiggy>
+is the most popular server fitting the bill.
 
 =head1 CONFIGURATION
 
@@ -143,8 +143,8 @@ has mount_path => (
 
 =head1 PLUGIN KEYWORDS
 
-In the various callbacks, the connection object that is
-passed is a L<Plack::App::WebSocket::Connection> object 
+In the various callbacks, the connection object C<$conn>
+is a L<Plack::App::WebSocket::Connection> object
 augmented with the L<Dancer2::Plugin::WebSocket::Connection> role.
 
 
