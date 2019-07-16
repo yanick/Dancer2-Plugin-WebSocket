@@ -8,6 +8,7 @@ Revision history for Dancer2-Plugin-WebSocket
  [DOCUMENTATION]
 
  [ENHANCEMENTS]
+    - add keyword 'websocket_connections' (GH#6)
 
  [NEW FEATURES]
 
