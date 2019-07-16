@@ -122,6 +122,8 @@ Path for the websocket mountpoint. Defaults to C</ws>.
 
 =cut
 
+use 5.12.0;
+
 use Plack::App::WebSocket;
 
 use Dancer2::Plugin;
@@ -247,6 +249,17 @@ has connections => (
     is => 'ro',
     default => sub{ {} },
 );
+
+=head2 websocket_connections
+
+Returns the list of currently open websocket connections.
+
+=cut
+
+sub websocket_connections :PluginKeyword {
+    my $self = shift;
+    return values %{ $self->connections };
+}
 
 =head2 websocket_url
 
