@@ -90,4 +90,6 @@ sub broadcast {
     $_->send(@args) for $self->targets(1);
 }
 
+=back
+
 1;
