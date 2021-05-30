@@ -1,18 +1,11 @@
 Revision history for Dancer2-Plugin-WebSocket
 
-{{$NEXT}}
- [API CHANGES]
-
+0.3.1 2021-05-30
  [BUG FIXES]
-   - Fixed pod errors as reported by CPANTS. (GH#7, Mohammad S Anwar)
-
- [DOCUMENTATION]
-
- [ENHANCEMENTS]
-
- [NEW FEATURES]
+ - Fixed pod errors as reported by CPANTS. (GH#7, Mohammad S Anwar)
 
  [STATISTICS]
+ - code churn: 3 files changed, 55 insertions(+), 41 deletions(-)
 
 0.3.0 2021-05-30
  [ENHANCEMENTS]
