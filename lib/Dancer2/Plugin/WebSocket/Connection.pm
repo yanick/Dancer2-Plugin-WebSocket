@@ -13,14 +13,14 @@ L<Plack::App::WebSocket::Connection> objects augmented with this role.
 =item serializer
 
 Serializer object used to serialize/deserialize messages. If it's not
-C<undef>, all messages that are not L<AnyEvent::WebSocket::Message> objects 
+C<undef>, all messages that are not L<AnyEvent::WebSocket::Message> objects
 are assumed to be JSON and will be deserialized
 before being passed to the handlers, and will be serialized after being
-give to C<send>. 
+give to C<send>.
 
 =item id
 
-A numerical value that is the id of the connection. 
+A numerical value that is the id of the connection.
 
 
 =back
@@ -96,7 +96,7 @@ around send => sub {
 
 =item in_channel( @channels )
 
-Returns C<true> if the connection belongs to at least one of the 
+Returns C<true> if the connection belongs to at least one of the
 given C<@channels>.
 
 =cut
@@ -120,6 +120,8 @@ to all connections belonging to the given C<@channels>.
 
     $conn->to( 'players' )->send( "game about to begin" );
 
+=back
+
 =cut
 
 sub to {
@@ -129,7 +131,5 @@ sub to {
         channels => \@channels,
     );
 }
-
-=back
 
 1;
