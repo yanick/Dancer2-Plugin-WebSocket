@@ -8,20 +8,22 @@ L<Plack::App::WebSocket::Connection> objects augmented with this role.
 
 =head2 Attributes
 
-=over serializer
+=over 4
+
+=item serializer
 
 Serializer object used to serialize/deserialize messages. If it's not
-C<undef>, all messages that are not L<AnyEvent::WebSocket::Message> objects 
+C<undef>, all messages that are not L<AnyEvent::WebSocket::Message> objects
 are assumed to be JSON and will be deserialized
 before being passed to the handlers, and will be serialized after being
-give to C<send>. 
+give to C<send>.
 
-=over id
+=item id
 
-A numerical value that is the id of the connection. 
+A numerical value that is the id of the connection.
 
 
-=item   
+=back
 
 =cut
 
@@ -94,7 +96,7 @@ around send => sub {
 
 =item in_channel( @channels )
 
-Returns C<true> if the connection belongs to at least one of the 
+Returns C<true> if the connection belongs to at least one of the
 given C<@channels>.
 
 =cut
@@ -117,6 +119,8 @@ Returns a L<Dancer2::Plugin::WebSocket::Group> that will emit messages
 to all connections belonging to the given C<@channels>.
 
     $conn->to( 'players' )->send( "game about to begin" );
+
+=back
 
 =cut
 

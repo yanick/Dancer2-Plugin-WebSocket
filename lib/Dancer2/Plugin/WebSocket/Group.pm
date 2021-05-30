@@ -48,7 +48,7 @@ sub targets {
 
     my $channels = Set::Tiny->new( @{$self->channels} );
 
-    return grep { 
+    return grep {
         $_->in_channel($channels) and
         ( !$omit_self or $self->source->id != $_->id )
     } values %{ $self->source->manager->connections };
@@ -82,6 +82,8 @@ Send the message to all connections of the group, except the original connection
         }
     }
 
+=back
+
 =cut
 
 sub broadcast {
@@ -89,5 +91,6 @@ sub broadcast {
 
     $_->send(@args) for $self->targets(1);
 }
+
 
 1;

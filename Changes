@@ -4,6 +4,7 @@ Revision history for Dancer2-Plugin-WebSocket
  [API CHANGES]
 
  [BUG FIXES]
+   - Fixed pod errors as reported by CPANTS. (GH#7, Mohammad S Anwar)
 
  [DOCUMENTATION]
 
