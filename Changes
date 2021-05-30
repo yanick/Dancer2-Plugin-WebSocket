@@ -8,6 +8,7 @@ Revision history for Dancer2-Plugin-WebSocket
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+    - add login hook. (GH#8, Vladislav Kantor)
 
   [ NEW FEATURES ]
 
